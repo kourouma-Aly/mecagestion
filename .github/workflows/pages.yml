@@ -1,0 +1,35 @@
+name: Publish MecaGestion
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/configure-pages@v5
+      - name: Prepare unchanged PWA files
+        run: |
+          mkdir -p _site/icons
+          cp 1-index.html _site/index.html
+          cp 2-manifest.webmanifest _site/manifest.webmanifest
+          cp 3-sw.js _site/sw.js
+          cp 4-icon-192.png _site/icons/icon-192.png
+          cp 5-icon-180.png _site/icons/icon-180.png
+          cp 6-icon-512.png _site/icons/icon-512.png
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - uses: actions/deploy-pages@v4
+        id: deployment
