@@ -1,5 +1,5 @@
 /* Cache of the application only. Garage data stays in this browser. */
-const CACHE='mecagestion-2aba802105ed';
+const CACHE='mecagestion-1addf6d3b2f4';
 const ASSETS=['./','./index.html','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png','./icons/icon-180.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(ASSETS)));});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('mecagestion-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()));});
