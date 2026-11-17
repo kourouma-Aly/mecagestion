@@ -23,7 +23,7 @@ jobs:
         run: |
           mkdir -p _site/icons
           cp 1-index.html _site/index.html
-          python3 -c 'from pathlib import Path; p=Path("_site/index.html"); s=p.read_text(); a,b=s.rsplit("\nrender();\n",1); p.write_text(a+"\n"+Path("atelier-labour.js").read_text()+"\n"+Path("atelier-maintenance.js").read_text()+"\nrender();\n"+b)'
+          python3 -c 'from pathlib import Path; p=Path("_site/index.html"); s=p.read_text(); a,b=s.rsplit("\nrender();\n",1); p.write_text(a+"\n"+"\n".join(part.read_text() for part in sorted(Path(".").glob("atelier-*.js")))+"\nrender();\n"+b)'
           cp 2-manifest.webmanifest _site/manifest.webmanifest
           cp 3-sw.js _site/sw.js
           sed -i "s/const CACHE=.*/const CACHE='mecagestion-${GITHUB_SHA}';/" _site/sw.js
