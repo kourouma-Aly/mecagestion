@@ -23,8 +23,10 @@ jobs:
         run: |
           mkdir -p _site/icons
           cp 1-index.html _site/index.html
+          python3 -c 'from pathlib import Path; p=Path("_site/index.html"); s=p.read_text(); a,b=s.rsplit("\nrender();\n",1); p.write_text(a+"\n"+Path("atelier-labour.js").read_text()+"\nrender();\n"+b)'
           cp 2-manifest.webmanifest _site/manifest.webmanifest
           cp 3-sw.js _site/sw.js
+          sed -i "s/const CACHE=.*/const CACHE='mecagestion-${GITHUB_SHA}';/" _site/sw.js
           cp 4-icon-192.png _site/icons/icon-192.png
           cp 5-icon-180.png _site/icons/icon-180.png
           cp 6-icon-512.png _site/icons/icon-512.png
